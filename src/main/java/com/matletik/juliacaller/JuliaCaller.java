@@ -1,5 +1,8 @@
 package com.matletik.juliacaller;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -81,10 +84,31 @@ public class JuliaCaller {
         bufferedWriterForSocket.newLine();
     }
 
-    public String GetAsJSON(String varname) throws IOException {
+    public void ExitSession() throws IOException {
+        bufferedWriterForSocket.write("exit");
+        bufferedWriterForSocket.newLine();
+    }
+
+    public void ShutdownServer() throws IOException {
+        bufferedWriterForSocket.write("shutdown");
+        bufferedWriterForSocket.newLine();
+    }
+
+    public String GetAsJSONString(String varname) throws IOException {
         bufferedWriterForSocket.write("get " + varname);
         bufferedWriterForSocket.newLine();
         bufferedWriterForSocket.flush();
         return bufferedReaderForSocket.readLine();
+    }
+
+    public JSONObject GetAsJSONObject(String name) throws IOException {
+        return new JSONObject(GetAsJSONString(name));
+    }
+
+    public JSONArray GetAsJSONArray(String name) throws IOException {
+        String jsonString = GetAsJSONString(name);
+        JSONObject obj = new JSONObject(jsonString);
+        JSONArray arr = obj.getJSONArray(name);
+        return arr;
     }
 }
