@@ -60,6 +60,7 @@ public class JuliaCaller {
             try{
                 socket = new Socket("localhost", this.port);
                 connected = true;
+                System.out.println("C: connected!");
                 break;
             }catch (ConnectException ce){
                 numtries++;
