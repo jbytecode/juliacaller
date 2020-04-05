@@ -14,7 +14,7 @@ public class JuliaCaller {
     private BufferedWriter bufferedWriterForJuliaConsole, bufferedWriterForSocket;
     private BufferedReader bufferedReaderForJuliaConsole, bufferedReaderForSocket;
     private int port;
-    private int maximumTriesToConnect = 5;
+    private int maximumTriesToConnect = 10;
 
     public JuliaCaller(String pathToJulia, int port){
         this.pathToJulia = pathToJulia;
@@ -48,6 +48,7 @@ public class JuliaCaller {
         bufferedWriterForJuliaConsole = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
         bufferedWriterForJuliaConsole.write(sb.toString());
         bufferedWriterForJuliaConsole.newLine();
+        SimpleLog("startServer: Sending serve(" + this.port + ") request.") ;
         bufferedWriterForJuliaConsole.write("serve(" + this.port + ")");
         bufferedWriterForJuliaConsole.newLine();
         bufferedWriterForJuliaConsole.flush();
@@ -60,12 +61,12 @@ public class JuliaCaller {
             try{
                 socket = new Socket("localhost", this.port);
                 connected = true;
-                System.out.println("C: connected!");
+                SimpleLog("Connect: connected!");
                 break;
             }catch (ConnectException ce){
                 numtries++;
                 try{
-                    System.out.println("C: retrying to connect: " + numtries + " / " + maximumTriesToConnect);
+                    SimpleLog("Connect: retrying to connect: " + numtries + " / " + maximumTriesToConnect);
                     Thread.sleep(1000);
                 }catch (InterruptedException ie){
 
@@ -81,6 +82,7 @@ public class JuliaCaller {
     }
 
     public void Execute(String command) throws IOException {
+        SimpleLog("Executute: Sending '" + command + "'");
         bufferedWriterForSocket.write("execute " + command);
         bufferedWriterForSocket.newLine();
     }
@@ -96,6 +98,7 @@ public class JuliaCaller {
     }
 
     public String GetAsJSONString(String varname) throws IOException {
+        SimpleLog("GetAsJSONString: Requesting variable " + varname);
         bufferedWriterForSocket.write("get " + varname);
         bufferedWriterForSocket.newLine();
         bufferedWriterForSocket.flush();
@@ -111,5 +114,11 @@ public class JuliaCaller {
         JSONObject obj = new JSONObject(jsonString);
         JSONArray arr = obj.getJSONArray(name);
         return arr;
+    }
+
+    public static void SimpleLog(String log){
+        if(Constants.VERBOSE_TRUE.equals(Constants.properties.getProperty("VERBOSE", Constants.VERBOSE_FALSE))){
+            System.out.println("JuliaCaller: " + log);
+        }
     }
 }
