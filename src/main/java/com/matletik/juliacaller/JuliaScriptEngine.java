@@ -1,5 +1,7 @@
 package com.matletik.juliacaller;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.script.*;
 import java.io.BufferedReader;
@@ -19,6 +21,7 @@ public class JuliaScriptEngine implements ScriptEngine, Invocable {
         caller.setMaximumTriesToConnect(20);
         try {
             caller.startServer();
+            caller.Connect();
         }catch (Exception e) {
             throw new JuliaRuntimeException(e.toString());
         }
@@ -54,7 +57,7 @@ public class JuliaScriptEngine implements ScriptEngine, Invocable {
 
     @Override
     public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
-        String result = null;
+        Object result = null;
         StringBuilder s = new StringBuilder();
         s.append(name);
         s.append("(");
@@ -71,10 +74,15 @@ public class JuliaScriptEngine implements ScriptEngine, Invocable {
             throw new JuliaRuntimeException(e.toString());
         }
         try{
-            result = caller.GetAsJSONString("__var__");
+            result = caller.GetAsJSONObject("__var__").get("__var__");
         }catch (Exception e){
-            throw new JuliaRuntimeException(e.toString());
+            try{
+                result = caller.GetAsJSONArray("__var__");
+            }catch (Exception e2){
+                throw new JuliaRuntimeException(e.toString());
+            }
         }
+
         return result;
     }
 
@@ -181,9 +189,15 @@ public class JuliaScriptEngine implements ScriptEngine, Invocable {
     @Override
     public Object get(String key) {
         try {
-            return caller.GetAsJSONString(key);
+            JSONObject val = caller.GetAsJSONObject(key);
+            return val.get(key);
         } catch (IOException e) {
-            return null;
+            try{
+                JSONArray val = caller.GetAsJSONArray(key);
+                return val;
+            }catch (IOException e2){
+                return null;
+            }
         }
     }
 
