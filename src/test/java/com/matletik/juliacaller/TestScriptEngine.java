@@ -62,11 +62,29 @@ public class TestScriptEngine {
     @Test
     public void invokeFunction2Test() throws ScriptException, NoSuchMethodException {
         Invocable invocable = (Invocable)engine;
-        engine.eval("using Statistics");
-        engine.eval("a = [1.0, 2.0, 3.0, 4.0, 5.0]");
-        engine.eval("f(x) = sum(x)/length(x)");
-        Object result = invocable.invokeFunction("f", "a");
-        assertEquals(3.0, result);
+            engine.eval("using Statistics");
+            engine.eval("a = [1.0, 2.0, 3.0, 4.0, 5.0]");
+            engine.eval("f(x) = sum(x)/length(x)");
+            Object result = invocable.invokeFunction("f", "a");
+            assertEquals(3.0, result);
+
+    }
+
+    @Test
+    public void getDict() throws ScriptException {
+        engine.eval("d = Dict(\"a\" => [10,20,30], \"b\" => 3.14159265)");
+        Object result = engine.get("d");
+        Object a = ((JSONObject)result).getJSONArray("a");
+        Object b = ((JSONObject)result).getDouble("b");
+
+        assertEquals(3.14159265, b);
+
+        JSONArray arr = (JSONArray)a;
+        assertEquals(10, arr.getInt(0));
+        assertEquals(20, arr.getInt(1));
+        assertEquals(30, arr.getInt(2));
+
+
     }
 
 

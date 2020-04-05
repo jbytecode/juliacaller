@@ -30,6 +30,7 @@ public class JuliaScriptEngine implements ScriptEngine, Invocable {
     @Override
     public Object invokeMethod(Object thiz, String name, Object... args) throws ScriptException, NoSuchMethodException {
         String result = null;
+        String randomVariableName = this.randomNumberString();
         StringBuilder s = new StringBuilder();
         s.append(thiz);
         s.append(".");
@@ -43,12 +44,12 @@ public class JuliaScriptEngine implements ScriptEngine, Invocable {
         }
         s.append(")");
         try {
-            caller.Execute("__var__ = " + s.toString());
+            caller.Execute(randomVariableName + " = " + s.toString());
         }catch (Exception e){
             throw new JuliaRuntimeException(e.toString());
         }
         try{
-            result = caller.GetAsJSONString("__var__");
+            result = caller.GetAsJSONString(randomVariableName);
         }catch (Exception e){
             throw new JuliaRuntimeException(e.toString());
         }
@@ -58,6 +59,7 @@ public class JuliaScriptEngine implements ScriptEngine, Invocable {
     @Override
     public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
         Object result = null;
+        String randomVariableName = this.randomNumberString();
         StringBuilder s = new StringBuilder();
         s.append(name);
         s.append("(");
@@ -69,15 +71,15 @@ public class JuliaScriptEngine implements ScriptEngine, Invocable {
         }
         s.append(")");
         try {
-            caller.Execute("__var__ = " + s.toString());
+            caller.Execute(randomVariableName + " = " + s.toString());
         }catch (Exception e){
             throw new JuliaRuntimeException(e.toString());
         }
         try{
-            result = caller.GetAsJSONObject("__var__").get("__var__");
+            result = caller.GetAsJSONObject(randomVariableName).get(randomVariableName);
         }catch (Exception e){
             try{
-                result = caller.GetAsJSONArray("__var__");
+                result = caller.GetAsJSONArray(randomVariableName);
             }catch (Exception e2){
                 throw new JuliaRuntimeException(e.toString());
             }
@@ -229,5 +231,9 @@ public class JuliaScriptEngine implements ScriptEngine, Invocable {
     @Override
     public ScriptEngineFactory getFactory() {
         return this.getFactory();
+    }
+
+    private String randomNumberString(){
+        return "__JULIACALLER__" + String.valueOf(Math.random() * 10000000).replaceAll("\\.","");
     }
 }

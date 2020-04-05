@@ -81,7 +81,7 @@ public class JuliaCaller {
         }
     }
 
-    public void Execute(String command) throws IOException {
+    public synchronized void Execute(String command) throws IOException {
         SimpleLog("Executute: Sending '" + command + "'");
         bufferedWriterForSocket.write("execute " + command);
         bufferedWriterForSocket.newLine();
@@ -97,7 +97,7 @@ public class JuliaCaller {
         bufferedWriterForSocket.newLine();
     }
 
-    public String GetAsJSONString(String varname) throws IOException {
+    public synchronized String GetAsJSONString(String varname) throws IOException {
         SimpleLog("GetAsJSONString: Requesting variable " + varname);
         bufferedWriterForSocket.write("get " + varname);
         bufferedWriterForSocket.newLine();
