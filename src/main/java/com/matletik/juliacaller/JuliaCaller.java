@@ -16,16 +16,16 @@ public class JuliaCaller {
     private int port;
     private int maximumTriesToConnect = 10;
 
-    public JuliaCaller(String pathToJulia, int port){
+    public JuliaCaller(String pathToJulia, int port) {
         this.pathToJulia = pathToJulia;
         this.port = port;
     }
 
-    public void setMaximumTriesToConnect(int tries){
+    public void setMaximumTriesToConnect(int tries) {
         this.maximumTriesToConnect = tries;
     }
 
-    public int getMaximumTriesToConnect(){
+    public int getMaximumTriesToConnect() {
         return this.maximumTriesToConnect;
     }
 
@@ -34,9 +34,9 @@ public class JuliaCaller {
         InputStream is = this.getClass().getResourceAsStream("juliacaller.jl");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
-        while(true){
+        while (true) {
             String line = reader.readLine();
-            if(line == null){
+            if (line == null) {
                 break;
             }
             sb.append(line);
@@ -48,7 +48,7 @@ public class JuliaCaller {
         bufferedWriterForJuliaConsole = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
         bufferedWriterForJuliaConsole.write(sb.toString());
         bufferedWriterForJuliaConsole.newLine();
-        SimpleLog("startServer: Sending serve(" + this.port + ") request.") ;
+        SimpleLog("startServer: Sending serve(" + this.port + ") request.");
         bufferedWriterForJuliaConsole.write("serve(" + this.port + ")");
         bufferedWriterForJuliaConsole.newLine();
         bufferedWriterForJuliaConsole.flush();
@@ -57,26 +57,26 @@ public class JuliaCaller {
     public void Connect() throws IOException {
         int numtries = 1;
         boolean connected = false;
-        while (numtries <= this.maximumTriesToConnect){
-            try{
+        while (numtries <= this.maximumTriesToConnect) {
+            try {
                 socket = new Socket("localhost", this.port);
                 connected = true;
                 SimpleLog("Connect: connected!");
                 break;
-            }catch (ConnectException ce){
+            } catch (ConnectException ce) {
                 numtries++;
-                try{
+                try {
                     SimpleLog("Connect: retrying to connect: " + numtries + " / " + maximumTriesToConnect);
                     Thread.sleep(1000);
-                }catch (InterruptedException ie){
+                } catch (InterruptedException ie) {
 
                 }
             }
         }
-        if(connected) {
+        if (connected) {
             bufferedWriterForSocket = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedReaderForSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        }else{
+        } else {
             throw new MaximumTriesForConnectionException("Socket cannot connect in maximum number of iterations defined as " + maximumTriesToConnect);
         }
     }
@@ -86,7 +86,7 @@ public class JuliaCaller {
         bufferedWriterForSocket.write("execute " + command);
         bufferedWriterForSocket.newLine();
     }
-    
+
     public void addJuliaObject(JuliaObject object) throws IOException {
         Execute(object.getCode());
     }
@@ -120,8 +120,28 @@ public class JuliaCaller {
         return arr;
     }
 
-    public static void SimpleLog(String log){
-        if(Constants.VERBOSE_TRUE.equals(Constants.properties.getProperty("VERBOSE", Constants.VERBOSE_FALSE))){
+    public double getDouble(String name) throws IOException {
+        return (new JSONObject(GetAsJSONString(name))).getDouble(name);
+    }
+
+    public float getFloat(String name) throws IOException {
+        return (new JSONObject(GetAsJSONString(name))).getFloat(name);
+    }
+
+    public float getInt(String name) throws IOException {
+        return (new JSONObject(GetAsJSONString(name))).getInt(name);
+    }
+
+    public float getLong(String name) throws IOException {
+        return (new JSONObject(GetAsJSONString(name))).getLong(name);
+    }
+
+    public boolean getBoolean(String name) throws IOException {
+        return (new JSONObject(GetAsJSONString(name))).getBoolean(name);
+    }
+
+    public static void SimpleLog(String log) {
+        if (Constants.VERBOSE_TRUE.equals(Constants.properties.getProperty("VERBOSE", Constants.VERBOSE_FALSE))) {
             System.out.println("JuliaCaller: " + log);
         }
     }

@@ -124,5 +124,16 @@ public class TestBasics {
         assertEquals(10.0, obj.getDouble(2));
         assertEquals(-4.0, obj.getDouble(3));
     }
+    
+    @Test
+    public void passArrayVariableTest() throws IOException {
+        List<Double> values = List.of(1.0, 2.0, 10.0, -4.0);
+        caller.addJuliaObject(JuliaObject.createArrayVariable("a", values));
+        caller.Execute("using Statistics");
+        caller.Execute("ave = mean(a)");
+        
+        double result = caller.getDouble("ave");
+        assertEquals(2.25, result);
+    }
 
 }
