@@ -1,6 +1,5 @@
 package com.matletik.juliacaller;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.json.JSONArray;
@@ -9,6 +8,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
+import java.util.List;
 
 public class TestBasics {
 
@@ -17,7 +17,8 @@ public class TestBasics {
     @BeforeAll
     public static void init() throws IOException {
         System.out.println("* Initializing tests");
-        caller = new JuliaCaller("/usr/local/bin/julia", 8000);
+        //caller = new JuliaCaller("/usr/local/bin/julia", 8000);
+        caller = new JuliaCaller("/usr/bin/julia", 8000);
         caller.startServer();
         caller.Connect();
     }
@@ -29,7 +30,7 @@ public class TestBasics {
     }
 
     @Test
-    public  void AssignmentTest() throws IOException {
+    public void AssignmentTest() throws IOException {
         caller.Execute("a = 10");
         String s = caller.GetAsJSONString("a");
         assertEquals("{\"a\":10}", s);
@@ -64,7 +65,7 @@ public class TestBasics {
     public void getAsJSONObject() throws IOException {
         caller.Execute("mypi = 3.14159265");
         JSONObject obj = caller.GetAsJSONObject("mypi");
-        assertEquals(obj.getDouble("mypi"), 3.14159265);
+        assertEquals(3.14159265, obj.getDouble("mypi"));
     }
 
     @Test
@@ -78,4 +79,50 @@ public class TestBasics {
         assertEquals(obj.getInt(3), 4);
         assertEquals(obj.getInt(4), 5);
     }
+
+    @Test
+    public void createRealVariableTest() throws IOException {
+        caller.addJuliaObject(JuliaObject.createDoubleVariable("a", 3.456));
+        String s = caller.GetAsJSONString("a");
+        assertEquals("{\"a\":3.456}", s);
+
+        caller.addJuliaObject(JuliaObject.createFloatVariable("a", 3.4567f));
+        s = caller.GetAsJSONString("a");
+        assertEquals("{\"a\":3.4567}", s);
+    }
+
+    @Test
+    public void createIntegralVariableTest() throws IOException {
+        caller.addJuliaObject(JuliaObject.createIntVariable("a", 3));
+        String s = caller.GetAsJSONString("a");
+        assertEquals("{\"a\":3}", s);
+
+        caller.addJuliaObject(JuliaObject.createLongVariable("a", 34567));
+        s = caller.GetAsJSONString("a");
+        assertEquals("{\"a\":34567}", s);
+    }
+
+    @Test
+    public void createBooleanVariableTest() throws IOException {
+        caller.addJuliaObject(JuliaObject.createBooleanVariable("a", true));
+        String s = caller.GetAsJSONString("a");
+        assertEquals("{\"a\":true}", s);
+
+        caller.addJuliaObject(JuliaObject.createBooleanVariable("a", false));
+        s = caller.GetAsJSONString("a");
+        assertEquals("{\"a\":false}", s);
+    }
+
+    @Test
+    public void createArrayVariableTest() throws IOException {
+        List<Double> values = List.of(1.0, 2.0, 10.0, -4.0);
+        caller.addJuliaObject(JuliaObject.createArrayVariable("a", values));
+        JSONArray obj = caller.GetAsJSONArray("a");
+        assertEquals(obj.length(), 4);
+        assertEquals(1.0, obj.getDouble(0));
+        assertEquals(2.0, obj.getDouble(1));
+        assertEquals(10.0, obj.getDouble(2));
+        assertEquals(-4.0, obj.getDouble(3));
+    }
+
 }

@@ -82,9 +82,13 @@ public class JuliaCaller {
     }
 
     public synchronized void Execute(String command) throws IOException {
-        SimpleLog("Executute: Sending '" + command + "'");
+        SimpleLog("Execute: Sending '" + command + "'");
         bufferedWriterForSocket.write("execute " + command);
         bufferedWriterForSocket.newLine();
+    }
+    
+    public void addJuliaObject(JuliaObject object) throws IOException {
+        Execute(object.getCode());
     }
 
     public void ExitSession() throws IOException {

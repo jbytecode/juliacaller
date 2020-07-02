@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.engine.script.Script;
 
 import javax.script.*;
 import java.io.IOException;
@@ -19,7 +18,8 @@ public class TestScriptEngine {
 
     @BeforeAll
     public static void init(){
-        Constants.setProperties(Constants.JULIA_PATH, "/usr/local/bin/julia");
+        //Constants.setProperties(Constants.JULIA_PATH, "/usr/local/bin/julia");
+        Constants.setProperties(Constants.JULIA_PATH, "/usr/bin/julia");
         Constants.setProperties(Constants.JULIA_PORT, "8001");
 
          manager = new ScriptEngineManager();
