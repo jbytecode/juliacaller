@@ -14,7 +14,7 @@ public class JuliaCaller {
     private BufferedWriter bufferedWriterForJuliaConsole, bufferedWriterForSocket;
     private BufferedReader bufferedReaderForJuliaConsole, bufferedReaderForSocket;
     private int port;
-    private int maximumTriesToConnect = 10;
+    private int maximumTriesToConnect = 30;
 
     public JuliaCaller(String pathToJulia, int port) {
         this.pathToJulia = pathToJulia;

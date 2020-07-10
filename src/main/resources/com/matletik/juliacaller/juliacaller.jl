@@ -6,6 +6,14 @@ juliacaller:
 =#
 
 using Sockets
+using Pkg
+
+a = try
+       Pkg.status("JSON")
+    catch
+       Pkg.add("JSON")
+    end
+
 using JSON
 
 function writeln(client, str)
