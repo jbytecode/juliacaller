@@ -1,4 +1,4 @@
-package com.matletik.juliacaller;
+package org.expr.juliacaller;
 
 public class JuliaRuntimeException extends RuntimeException {
     public JuliaRuntimeException(String message) {

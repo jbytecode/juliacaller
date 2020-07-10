@@ -1,4 +1,4 @@
-package com.matletik.juliacaller;
+package org.expr.juliacaller;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,7 +18,7 @@ public class JuliaScriptEngine implements ScriptEngine, Invocable {
         String juliaPort = Constants.properties.getProperty(Constants.JULIA_PORT);
         int port = Integer.parseInt(juliaPort);
         caller = new JuliaCaller(juliaExecutable, port);
-        caller.setMaximumTriesToConnect(20);
+        //caller.setMaximumTriesToConnect(20);
         try {
             caller.startServer();
             caller.Connect();

@@ -1,4 +1,4 @@
-package com.matletik.juliacaller;
+package org.expr.juliacaller;
 
 import javax.script.Bindings;
 import javax.script.ScriptContext;

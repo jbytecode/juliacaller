@@ -1,4 +1,4 @@
-package com.matletik.juliacaller;
+package org.expr.juliacaller;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;

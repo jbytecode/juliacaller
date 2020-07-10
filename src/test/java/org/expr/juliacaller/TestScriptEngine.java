@@ -1,4 +1,4 @@
-package com.matletik.juliacaller;
+package org.expr.juliacaller;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

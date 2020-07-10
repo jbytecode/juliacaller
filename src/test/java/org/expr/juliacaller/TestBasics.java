@@ -1,4 +1,4 @@
-package com.matletik.juliacaller;
+package org.expr.juliacaller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
