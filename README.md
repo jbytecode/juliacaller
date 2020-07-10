@@ -117,6 +117,15 @@ assertEquals(obj.getInt(4), 5);
 caller.ShutdownServer();
 ```
 
+# Easy passing of objects
+```
+List<Double> values = List.of(1.0, 2.0, 10.0, -4.0);
+caller.addJuliaObject(JuliaObject.createArrayVariable("a", values));
+caller.Execute("using Statistics");
+caller.Execute("ave = mean(a)");
+double result = caller.getDouble("ave");
+assertEquals(2.25, result);
+```
 
 Note that the library is in its early development stage. 
 
