@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.script.*;
 import java.io.IOException;
+import static org.expr.juliacaller.TestBasics.caller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,7 +20,8 @@ public class TestScriptEngine {
     @BeforeAll
     public static void init(){
         //Constants.setProperties(Constants.JULIA_PATH, "/usr/local/bin/julia");
-        Constants.setProperties(Constants.JULIA_PATH, "/usr/bin/julia");
+        //Constants.setProperties(Constants.JULIA_PATH, "/usr/bin/julia");
+        Constants.setProperties(Constants.JULIA_PATH, Utilities.TryFindingJuliaExecutable());
         Constants.setProperties(Constants.JULIA_PORT, "8001");
 
          manager = new ScriptEngineManager();

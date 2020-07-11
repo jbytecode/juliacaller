@@ -18,7 +18,8 @@ public class TestBasics {
     public static void init() throws IOException {
         System.out.println("* Initializing tests");
         //caller = new JuliaCaller("/usr/local/bin/julia", 8000);
-        caller = new JuliaCaller("/usr/bin/julia", 8000);
+        //caller = new JuliaCaller("/usr/bin/julia", 8000);
+        caller = new JuliaCaller(Utilities.TryFindingJuliaExecutable(), 8000);
         caller.startServer();
         caller.Connect();
     }
