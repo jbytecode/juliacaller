@@ -1,7 +1,7 @@
 
 # JuliaCaller
 
-A library for calling Julia from Java
+A library for calling Julia from Java.
 
 
 # Initials
