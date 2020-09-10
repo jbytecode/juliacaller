@@ -1,12 +1,12 @@
  
-language: java
+language: julia
 
 env:
 - JULIA_PKG_SERVER="https://pkg.julialang.org"
 
 before_script: 
 - sudo apt-get update
-- sudo apt-get install julia
+- sudo apt-get install maven
 - julia --version
 - julia -e 'import Pkg; Pkg.add("JSON");'
 
