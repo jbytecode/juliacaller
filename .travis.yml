@@ -1,6 +1,9 @@
  
 language: java
 
+jdk:
+  - openjdk13
+
 env:
 - JULIA_PKG_SERVER="https://pkg.julialang.org"
 
