@@ -1,8 +1,12 @@
  
 language: java
 
+env:
+- JULIA_PKG_SERVER="https://pkg.julialang.org"
+
 before_script: 
 - sudo apt-get update
 - sudo apt-get install julia
+- julia -e 'import Pkg; Pkg.add("JSON");'
 
 script: mvn test
