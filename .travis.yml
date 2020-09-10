@@ -3,7 +3,7 @@ language: java
 
 before_script: 
 - sudo apt-get update
-- sudo apt-get -y install julia
+- sudo apt-get install julia
 - julia -e 'using Pkg; Pkg.add("JSON")'
 
 script: mvn test
