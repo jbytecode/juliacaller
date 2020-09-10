@@ -8,11 +8,13 @@ juliacaller:
 using Sockets
 using Pkg
 
+
 a = try
-       Pkg.status("JSON")
-    catch
+       v = Pkg.installed()["JSON"]
+	catch
        Pkg.add("JSON")
     end
+
 
 using JSON
 
@@ -67,6 +69,9 @@ function handle_client(server, client)
 				writeln(client, json(__D__))
 			elseif startswith(__line__, "exit")
 				break
+			elseif startswith(__line__, "install ")
+				__pkg__ = __line__[9:end]
+				Pkg.add(__Pkg__)
 			elseif startswith(__line__, "shutdown")
 				close(client)
 				close(server)

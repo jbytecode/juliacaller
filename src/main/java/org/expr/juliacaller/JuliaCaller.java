@@ -80,6 +80,11 @@ public class JuliaCaller {
             throw new MaximumTriesForConnectionException("Socket cannot connect in maximum number of iterations defined as " + maximumTriesToConnect);
         }
     }
+    
+    public synchronized void InstallPackage(String pkg) throws IOException {
+        SimpleLog("Installing package " + pkg);
+        Execute("install " + pkg);
+    }
 
     public synchronized void Execute(String command) throws IOException {
         SimpleLog("Execute: Sending '" + command + "'");

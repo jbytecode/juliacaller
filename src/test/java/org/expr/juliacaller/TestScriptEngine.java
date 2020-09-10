@@ -41,8 +41,8 @@ public class TestScriptEngine {
 
     @Test
     public void getAsJSONArray() throws ScriptException {
-        engine.eval("a = [1,2,3]");
-        Object result = engine.get("a");
+        engine.eval("arr7 = [1,2,3]");
+        Object result = engine.get("arr7");
 
         assertTrue(result instanceof JSONArray);
 
@@ -56,8 +56,8 @@ public class TestScriptEngine {
     public void invokeFunctionTest() throws ScriptException, NoSuchMethodException {
         Invocable invocable = (Invocable)engine;
         engine.eval("using Statistics");
-        engine.eval("a = [1.0, 2.0, 3.0]");
-        Object result = invocable.invokeFunction("mean", "a");
+        engine.eval("arr5 = [1.0, 2.0, 3.0]");
+        Object result = invocable.invokeFunction("mean", "arr5");
         assertEquals(2.0, result);
     }
 
@@ -65,17 +65,17 @@ public class TestScriptEngine {
     public void invokeFunction2Test() throws ScriptException, NoSuchMethodException {
         Invocable invocable = (Invocable)engine;
             engine.eval("using Statistics");
-            engine.eval("a = [1.0, 2.0, 3.0, 4.0, 5.0]");
+            engine.eval("arr2 = [1.0, 2.0, 3.0, 4.0, 5.0]");
             engine.eval("f(x) = sum(x)/length(x)");
-            Object result = invocable.invokeFunction("f", "a");
+            Object result = invocable.invokeFunction("f", "arr2");
             assertEquals(3.0, result);
 
     }
 
     @Test
     public void getDict() throws ScriptException {
-        engine.eval("d = Dict(\"a\" => [10,20,30], \"b\" => 3.14159265)");
-        Object result = engine.get("d");
+        engine.eval("d1 = Dict(\"a\" => [10,20,30], \"b\" => 3.14159265)");
+        Object result = engine.get("d1");
         Object a = ((JSONObject)result).getJSONArray("a");
         Object b = ((JSONObject)result).getDouble("b");
 
