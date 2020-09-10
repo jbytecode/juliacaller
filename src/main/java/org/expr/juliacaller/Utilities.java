@@ -7,7 +7,8 @@ public class Utilities {
     public final static String TryFindingJuliaExecutable() {
         String[] paths = new String[]{
             "/usr/local/bin/julia",
-            "/usr/bin/julia"
+            "/usr/bin/julia",
+            "./julia-1.5.1/bin/julia"
         };
         for (String s : paths) {
             File f = new File(s);
@@ -15,6 +16,7 @@ public class Utilities {
                 return s;
             }
         }
-        return "";
+        throw new JuliaRuntimeException("Julia executable is not found in predefined paths.");
     }
+    
 }
