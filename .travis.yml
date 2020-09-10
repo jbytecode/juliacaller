@@ -7,6 +7,7 @@ env:
 before_script: 
 - sudo apt-get update
 - sudo apt-get install julia
+- julia --version
 - julia -e 'import Pkg; Pkg.add("JSON");'
 
 script: mvn test
