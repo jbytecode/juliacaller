@@ -2,7 +2,6 @@
 language: java
 
 before_script: 
-- cd juliacaller
 - sudo apt-get update
 - sudo apt-get -y install julia
 - julia -e 'using Pkg; Pkg.add("JSON")'
