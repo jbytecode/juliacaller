@@ -1,4 +1,6 @@
 
+[![Build Status](https://travis-ci.org/jbytecode/juliacaller.svg?branch=master&status=passed)](https://travis-ci.org/github/jbytecode/juliacaller)
+
 # JuliaCaller
 
 A library for calling Julia from Java.
@@ -9,10 +11,15 @@ JuliaCaller creates a TCP server that listens on a special port in Julia side. T
 Julia statements and expressions that sent from the Java side. The result is then handled in Java side as 
 primitives, JSONObjects and JSONArrays.
 
+## First things first!
+Don't forget to install the JSON package in your Julia environment before running JuliaCaller. JuliaCaller first tries to install the JSON package when its first use, however, this may take time and the maximum number of tries of connection may be exceed.
+
 # javax.script interface
 JuliaCaller implements javax.script interface, that is, it can be used as a scripting engine in Java.
 
 # Examples
+
+Here is the section of examples. For now, we have only tests in the source code. Please have a look at the test folder.
 
 ## Getting primitives
 This example create a scripting environment for Julia. The statement 'a = 3' is sent to Julia and the result is handled from Java.
