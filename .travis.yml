@@ -8,6 +8,7 @@ before_script:
 - wget https://julialang-s3.julialang.org/bin/linux/x64/1.5/julia-1.5.1-linux-x86_64.tar.gz
 - tar xfz julia-1.5.1-linux-x86_64.tar.gz
 - export PATH=$PATH:./julia-1.5.1/bin
+- ln -s ./julia-1.5.1/bin/julia /usr/bin/julia
 - julia --version
 - julia -e 'import Pkg; Pkg.add("JSON");'
 
