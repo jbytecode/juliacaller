@@ -12,7 +12,19 @@ Julia statements and expressions that sent from the Java side. The result is the
 primitives, JSONObjects and JSONArrays.
 
 ## First things first!
-Don't forget to install the JSON package in your Julia environment before running JuliaCaller. JuliaCaller first tries to install the JSON package when its first use, however, this may take time and the maximum number of tries of connection may be exceed.
+Don't forget to install the **JSON** package in your Julia environment before running JuliaCaller. JuliaCaller first tries to install the **JSON** package when its first use, however, this may take time and the maximum number of tries of connection may be exceed.
+
+```julia
+]add JSON
+```
+
+or 
+
+```julia
+julia> using Pkg
+julia> Pkg.add("JSON")
+```
+
 
 # javax.script interface
 JuliaCaller implements javax.script interface, that is, it can be used as a scripting engine in Java.
@@ -23,7 +35,7 @@ Here is the section of examples. For now, we have only tests in the source code.
 
 ## Getting primitives
 This example create a scripting environment for Julia. The statement 'a = 3' is sent to Julia and the result is handled from Java.
-```
+```java
 Constants.setProperties(Constants.JULIA_PATH, "/usr/local/bin/julia");
 Constants.setProperties(Constants.JULIA_PORT, "8001");
 
@@ -38,7 +50,7 @@ engine.eval("a = 3");
 Object a = engine.get("a");
 ```
 ## Getting arrays
-```
+```java
 Constants.setProperties(Constants.JULIA_PATH, "/usr/local/bin/julia");
 Constants.setProperties(Constants.JULIA_PORT, "8001");
 
@@ -61,7 +73,7 @@ assertEquals(3, arr.getInt(2));
 ```
 
 ## Function calls
-```
+```java
 Constants.setProperties(Constants.JULIA_PATH, "/usr/local/bin/julia");
 Constants.setProperties(Constants.JULIA_PORT, "8001");
 
@@ -79,7 +91,7 @@ Object result = engine.get("b");
 ```
 
 ## Invocable interface
-```
+```java
 Constants.setProperties(Constants.JULIA_PATH, "/usr/local/bin/julia");
 Constants.setProperties(Constants.JULIA_PORT, "8001");
 
@@ -97,7 +109,7 @@ Object result = invocable.invokeFunction("mean", "a");
 ```
 
 # Using JuliaCaller without javax.script interface
-```
+```java
 caller = new JuliaCaller("/usr/local/bin/julia", 8000);
 caller.startServer();
 caller.Connect();
@@ -125,7 +137,7 @@ caller.ShutdownServer();
 ```
 
 # Easy passing of objects
-```
+```java
 List<Double> values = List.of(1.0, 2.0, 10.0, -4.0);
 caller.addJuliaObject(JuliaObject.createArrayVariable("a", values));
 caller.Execute("using Statistics");
