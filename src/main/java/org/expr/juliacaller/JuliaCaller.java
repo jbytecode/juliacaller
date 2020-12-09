@@ -133,11 +133,11 @@ public class JuliaCaller {
         return (new JSONObject(GetAsJSONString(name))).getFloat(name);
     }
 
-    public float getInt(String name) throws IOException {
+    public int getInt(String name) throws IOException {
         return (new JSONObject(GetAsJSONString(name))).getInt(name);
     }
 
-    public float getLong(String name) throws IOException {
+    public long getLong(String name) throws IOException {
         return (new JSONObject(GetAsJSONString(name))).getLong(name);
     }
 

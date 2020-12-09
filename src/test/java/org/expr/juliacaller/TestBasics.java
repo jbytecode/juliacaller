@@ -136,5 +136,5 @@ public class TestBasics {
         double result = caller.getDouble("ave");
         assertEquals(2.25, result);
     }
-
+   
 }
