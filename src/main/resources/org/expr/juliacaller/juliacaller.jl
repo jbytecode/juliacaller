@@ -1,19 +1,18 @@
-#=
+#= 
 juliacaller:
 - Julia version: 1.4
 - Author: Mehmet Hakan Satman
-- Date: 2020-04-03
-=#
+- Date: 2020-04-03 =#
 
 using Sockets
 using Pkg
 
 
 a = try
-       v = Pkg.installed()["JSON"]
+    v = Pkg.installed()["JSON"]
 	catch
-       Pkg.add("JSON")
-    end
+    Pkg.add("JSON")
+end
 
 
 using JSON
@@ -61,8 +60,15 @@ function handle_client(server, client)
 		println(__line__)
 			if startswith(__line__, "execute ")
 				__command__ = __line__[9:end]
-				eval(Meta.parse(__command__))
-				#writeln(client, "eval okay")
+				try
+					@debug Evaling __command__
+					eval(Meta.parse(__command__))
+				catch mth_err
+					@error mth_err
+					close(client)
+					close(server)
+				end
+				# writeln(client, "eval okay")
 			elseif startswith(__line__, "get ")
 				__varname__ = __line__[5:end]
 				__D__ = Dict(__varname__ => eval(Meta.parse(__varname__)))
@@ -87,7 +93,7 @@ Creates a TCP server socket and listens on a given port.
 # Arguments
 - `PORT::Integer`: The port number for the server socket, default is 8000.
 """
-function serve(PORT = 8000)
+function serve(PORT=8000)
 	server = listen(PORT)
 	println("Listening JuliaCaller on port $PORT")
 	while true
@@ -95,7 +101,7 @@ function serve(PORT = 8000)
 			client = accept(server)
 			if (@isdefined client)
 				handle_client(server, client)
-			else
+    			else
 				close(client)
 			end
 		catch err

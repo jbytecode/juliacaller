@@ -26,9 +26,29 @@ public class TestBasics {
 
     @AfterAll
     public static void finish() throws IOException {
-        System.out.println("* Shuting down the server");
+        Thread th = new Thread(new Runnable(){
+            public void run(){
+                System.out.println("* Shuting down the server in 1 second(s)");
+                for (int i = 0; i < 1; i++){
+                    try{
+                        Thread.sleep(1000);
+                        System.out.print(".");
+                    }catch(InterruptedException ie){
+
+                    }
+                }
+            };
+        });
+        th.start();
+        try{
+        th.join();
+        }catch(InterruptedException e){
+
+        }
         caller.ShutdownServer();
     }
+
+
 
     @Test
     public void AssignmentTest() throws IOException {
@@ -137,4 +157,7 @@ public class TestBasics {
         assertEquals(2.25, result);
     }
    
+       
+   
+ 
 }

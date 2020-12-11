@@ -8,8 +8,9 @@ public class Constants {
     public final static String JULIA_PATH = "JULIA_PATH";
     public final static String JULIA_PORT= "JULIA_PORT";
     public final static String VERBOSE = "VERBOSE";
-    public final static String VERBOSE_TRUE = "true";
-    public final static String VERBOSE_FALSE = "false";
+    public final static String TRUE = "true";
+    public final static String FALSE = "false";
+    public final static String JULIA_ERROR_CONSOLE = "JULIA_ERROR_CONSOLE";
 
     public static Properties properties;
     private final static String propertiesFileName = "juliacaller.properties";
@@ -40,7 +41,8 @@ public class Constants {
     public static void createEmptyProperties(){
         properties.setProperty(Constants.JULIA_PATH, "julia");
         properties.setProperty(Constants.JULIA_PORT, "8000");
-        properties.setProperty(Constants.VERBOSE, VERBOSE_TRUE);
+        properties.setProperty(Constants.VERBOSE, TRUE);
+        properties.setProperty(Constants.JULIA_ERROR_CONSOLE, TRUE);
         save();
     }
 }
