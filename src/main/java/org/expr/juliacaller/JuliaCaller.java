@@ -18,7 +18,6 @@ public class JuliaCaller {
     private int maximumTriesToConnect = 60;
     private JuliaErrorConsoleWatcher watcher;
     private Process process;
-    
 
     public JuliaCaller(String pathToJulia, int port) {
         this.pathToJulia = pathToJulia;
@@ -50,12 +49,12 @@ public class JuliaCaller {
         is.close();
         bufferedReaderForJuliaConsole = new BufferedReader(new InputStreamReader(process.getInputStream()));
         bufferedWriterForJuliaConsole = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-        
+
         if (Constants.TRUE.equals(Constants.properties.getProperty(Constants.JULIA_ERROR_CONSOLE, Constants.FALSE))) {
             watcher = new JuliaErrorConsoleWatcher(process);
-            watcher.startWatching();    
+            watcher.startWatching();
         }
-        
+
         bufferedWriterForJuliaConsole.write(sb.toString());
         bufferedWriterForJuliaConsole.newLine();
         SimpleLog("startServer: Sending serve(" + this.port + ") request.");
@@ -87,11 +86,11 @@ public class JuliaCaller {
             bufferedWriterForSocket = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedReaderForSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } else {
-            throw new MaximumTriesForConnectionException("Socket cannot connect in maximum number of iterations defined as " + maximumTriesToConnect);
+            throw new MaximumTriesForConnectionException(
+                    "Socket cannot connect in maximum number of iterations defined as " + maximumTriesToConnect);
         }
     }
 
-    
     public synchronized void InstallPackage(String pkg) throws IOException {
         SimpleLog("Installing package " + pkg);
         Execute("install " + pkg);
@@ -101,6 +100,16 @@ public class JuliaCaller {
         SimpleLog("Execute: Sending '" + command + "'");
         bufferedWriterForSocket.write("execute " + command);
         bufferedWriterForSocket.newLine();
+    }
+
+    public synchronized void ExecuteDefineFunction(String command) throws IOException {
+        SimpleLog("Execute: Sending function definition");
+        File tempfile = File.createTempFile("juliacaller-function-definition", "jl");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(tempfile));
+        writer.write(command);
+        writer.flush();
+        writer.close();
+        Execute("include(\"" + tempfile.getAbsolutePath() + "\")");
     }
 
     public void addJuliaObject(JuliaObject object) throws IOException {
@@ -114,13 +123,13 @@ public class JuliaCaller {
 
     public void ShutdownServer() throws IOException {
         if (Constants.TRUE.equals(Constants.properties.getProperty(Constants.JULIA_ERROR_CONSOLE, Constants.FALSE))) {
-            watcher.stopWatching();    
+            watcher.stopWatching();
         }
         bufferedWriterForSocket.write("shutdown");
         bufferedWriterForSocket.newLine();
     }
 
-    public  String GetAsJSONString(String varname) throws IOException {
+    public String GetAsJSONString(String varname) throws IOException {
         SimpleLog("GetAsJSONString: Requesting variable " + varname);
         bufferedWriterForSocket.write("get " + varname);
         bufferedWriterForSocket.newLine();

@@ -18,18 +18,18 @@ public class TestScriptEngine {
     public static ScriptEngine engine;
 
     @BeforeAll
-    public static void init(){
-        //Constants.setProperties(Constants.JULIA_PATH, "/usr/local/bin/julia");
-        //Constants.setProperties(Constants.JULIA_PATH, "/usr/bin/julia");
+    public static void init() {
+        // Constants.setProperties(Constants.JULIA_PATH, "/usr/local/bin/julia");
+        // Constants.setProperties(Constants.JULIA_PATH, "/usr/bin/julia");
         Constants.setProperties(Constants.JULIA_PATH, Utilities.TryFindingJuliaExecutable());
-        Constants.setProperties(Constants.JULIA_PORT, "8001");
+        Constants.setProperties(Constants.JULIA_PORT, "8002");
 
-         manager = new ScriptEngineManager();
-         engine = manager.getEngineByName("Julia");
+        manager = new ScriptEngineManager();
+        engine = manager.getEngineByName("Julia");
     }
 
     @Test
-    public void engineCreatedTest(){
+    public void engineCreatedTest() {
         assertTrue(engine != null);
     }
 
@@ -54,7 +54,7 @@ public class TestScriptEngine {
 
     @Test
     public void invokeFunctionTest() throws ScriptException, NoSuchMethodException {
-        Invocable invocable = (Invocable)engine;
+        Invocable invocable = (Invocable) engine;
         engine.eval("using Statistics");
         engine.eval("arr5 = [1.0, 2.0, 3.0]");
         Object result = invocable.invokeFunction("mean", "arr5");
@@ -63,12 +63,12 @@ public class TestScriptEngine {
 
     @Test
     public void invokeFunction2Test() throws ScriptException, NoSuchMethodException {
-        Invocable invocable = (Invocable)engine;
-            engine.eval("using Statistics");
-            engine.eval("arr2 = [1.0, 2.0, 3.0, 4.0, 5.0]");
-            engine.eval("f(x) = sum(x)/length(x)");
-            Object result = invocable.invokeFunction("f", "arr2");
-            assertEquals(3.0, result);
+        Invocable invocable = (Invocable) engine;
+        engine.eval("using Statistics");
+        engine.eval("arr2 = [1.0, 2.0, 3.0, 4.0, 5.0]");
+        engine.eval("f(x) = sum(x)/length(x)");
+        Object result = invocable.invokeFunction("f", "arr2");
+        assertEquals(3.0, result);
 
     }
 
@@ -76,18 +76,16 @@ public class TestScriptEngine {
     public void getDict() throws ScriptException {
         engine.eval("d1 = Dict(\"a\" => [10,20,30], \"b\" => 3.14159265)");
         Object result = engine.get("d1");
-        Object a = ((JSONObject)result).getJSONArray("a");
-        Object b = ((JSONObject)result).getDouble("b");
+        Object a = ((JSONObject) result).getJSONArray("a");
+        Object b = ((JSONObject) result).getDouble("b");
 
         assertEquals(3.14159265, b);
 
-        JSONArray arr = (JSONArray)a;
+        JSONArray arr = (JSONArray) a;
         assertEquals(10, arr.getInt(0));
         assertEquals(20, arr.getInt(1));
         assertEquals(30, arr.getInt(2));
 
-
     }
-
 
 }
