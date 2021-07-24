@@ -61,4 +61,29 @@ public class TestFunctionDefinition {
         assertEquals(8, result);
     }
 
+    @Test
+    public void defineFunctionAndCallTestMultipleDispatch() throws IOException {
+        String code = """
+                function mysum(x::Int64, y::Int64)::Int64
+                  total = x + y
+                  return total
+                end
+
+                function mysum(x::Float64, y::Float64)::Float64
+                  total = x + y
+                  return total
+                end
+                """;
+
+        caller.ExecuteDefineFunction(code);
+
+        caller.Execute("jresult = mysum(3, 5)");
+        int result = caller.getInt("jresult");
+        assertEquals(8, result);
+
+        caller.Execute("jresult = mysum(3.1, 5.1)");
+        double resultdbl = caller.getDouble("jresult");
+        assertEquals(8.2, resultdbl);
+
+    }
 }
