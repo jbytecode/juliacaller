@@ -13,7 +13,7 @@ public class JuliaScriptContext implements ScriptContext {
     HashMap<String, Object> Attributes;
     Bindings bindings;
 
-    public JuliaScriptContext(){
+    public JuliaScriptContext() {
         this.Attributes = new HashMap<>();
         this.bindings = new SimpleBindings();
     }

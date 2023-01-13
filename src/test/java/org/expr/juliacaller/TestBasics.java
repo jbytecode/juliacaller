@@ -17,8 +17,8 @@ public class TestBasics {
     @BeforeAll
     public static void init() throws IOException {
         System.out.println("* Initializing tests");
-        //caller = new JuliaCaller("/usr/local/bin/julia", 8000);
-        //caller = new JuliaCaller("/usr/bin/julia", 8000);
+        // caller = new JuliaCaller("/usr/local/bin/julia", 8000);
+        // caller = new JuliaCaller("/usr/bin/julia", 8000);
         caller = new JuliaCaller(Utilities.TryFindingJuliaExecutable(), 8000);
         caller.startServer();
         caller.Connect();
@@ -26,29 +26,27 @@ public class TestBasics {
 
     @AfterAll
     public static void finish() throws IOException {
-        Thread th = new Thread(new Runnable(){
-            public void run(){
+        Thread th = new Thread(new Runnable() {
+            public void run() {
                 System.out.println("* Shuting down the server in 1 second(s)");
-                for (int i = 0; i < 1; i++){
-                    try{
+                for (int i = 0; i < 1; i++) {
+                    try {
                         Thread.sleep(1000);
                         System.out.print(".");
-                    }catch(InterruptedException ie){
+                    } catch (InterruptedException ie) {
 
                     }
                 }
             };
         });
         th.start();
-        try{
-        th.join();
-        }catch(InterruptedException e){
+        try {
+            th.join();
+        } catch (InterruptedException e) {
 
         }
         caller.ShutdownServer();
     }
-
-
 
     @Test
     public void AssignmentTest() throws IOException {
@@ -145,19 +143,16 @@ public class TestBasics {
         assertEquals(10.0, obj.getDouble(2));
         assertEquals(-4.0, obj.getDouble(3));
     }
-    
+
     @Test
     public void passArrayVariableTest() throws IOException {
         List<Double> values = List.of(1.0, 2.0, 10.0, -4.0);
         caller.addJuliaObject(JuliaObject.createArrayVariable("a", values));
         caller.Execute("using Statistics");
         caller.Execute("ave = mean(a)");
-        
+
         double result = caller.getDouble("ave");
         assertEquals(2.25, result);
     }
-   
-       
-   
- 
+
 }

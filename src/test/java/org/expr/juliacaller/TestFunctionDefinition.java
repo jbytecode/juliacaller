@@ -3,6 +3,9 @@ package org.expr.juliacaller;
 import java.io.IOException;
 import java.util.List;
 import static org.expr.juliacaller.TestBasics.caller;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
@@ -84,6 +87,28 @@ public class TestFunctionDefinition {
         caller.Execute("jresult = mysum(3.1, 5.1)");
         double resultdbl = caller.getDouble("jresult");
         assertEquals(8.2, resultdbl);
+    }
 
+    @Test
+    public void defineFunctionThatReturnsDict() throws IOException {
+        String code = """
+                function getDictionary()
+                    return Dict(
+                        "a" => 1,
+                        "b" => 2,
+                        "c" => 3.14,
+                        "d" => true
+                    )
+                end
+                """;
+        caller.ExecuteDefineFunction(code);
+
+        caller.Execute("jresult = getDictionary()");
+
+        JSONObject jresult = caller.GetAsJSONObject("jresult");
+        assertEquals(1, jresult.getJSONObject("jresult").getInt("a"));
+        assertEquals(2, jresult.getJSONObject("jresult").getInt("b"));
+        assertEquals(3.14, jresult.getJSONObject("jresult").getDouble("c"));
+        assertEquals(true, jresult.getJSONObject("jresult").getBoolean("d"));
     }
 }

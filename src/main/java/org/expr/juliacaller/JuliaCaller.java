@@ -15,7 +15,7 @@ public class JuliaCaller {
     private BufferedReader bufferedReaderForJuliaConsole, bufferedReaderForSocket;
     private BufferedReader bufferedReaderForJuliaConsoleErrors;
     private int port;
-    private int maximumTriesToConnect = 60;
+    private int maximumTriesToConnect = 90;
     private JuliaErrorConsoleWatcher watcher;
     private Process process;
 

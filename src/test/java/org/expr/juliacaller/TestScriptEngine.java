@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import javax.script.*;
 import java.io.IOException;
-import static org.expr.juliacaller.TestBasics.caller;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

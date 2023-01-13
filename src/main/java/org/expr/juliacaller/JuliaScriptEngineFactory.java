@@ -67,7 +67,7 @@ public class JuliaScriptEngineFactory implements ScriptEngineFactory {
                     return null;
             }
         }
-        return("!");
+        return ("!");
     }
 
     @Override
