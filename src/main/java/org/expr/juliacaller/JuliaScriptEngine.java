@@ -7,6 +7,7 @@ import javax.script.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.math.BigDecimal;
 
 public class JuliaScriptEngine implements ScriptEngine, Invocable {
 

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.script.*;
 import java.io.IOException;
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -56,7 +58,7 @@ public class TestScriptEngine {
         engine.eval("using Statistics");
         engine.eval("arr5 = [1.0, 2.0, 3.0]");
         Object result = invocable.invokeFunction("mean", "arr5");
-        assertEquals(2.0, result);
+        assertEquals(2.0, ((BigDecimal)result).doubleValue());
     }
 
     @Test
@@ -66,8 +68,7 @@ public class TestScriptEngine {
         engine.eval("arr2 = [1.0, 2.0, 3.0, 4.0, 5.0]");
         engine.eval("f(x) = sum(x)/length(x)");
         Object result = invocable.invokeFunction("f", "arr2");
-        assertEquals(3.0, result);
-
+        assertEquals(3.0, ((BigDecimal)result).doubleValue());
     }
 
     @Test
