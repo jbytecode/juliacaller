@@ -19,6 +19,7 @@ public class Constants {
         properties = new Properties();
         try {
             properties.load(new FileReader(new File(propertiesFileName)));
+            System.out.println("Loaded Properties: " + properties);
         } catch (Exception fnte) {
             createEmptyProperties();
         }

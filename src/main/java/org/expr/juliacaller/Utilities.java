@@ -5,16 +5,16 @@ import java.io.File;
 public class Utilities {
 
     public final static String TryFindingJuliaExecutable() {
-        String[] paths = new String[]{
-            "/usr/local/bin/julia",
-            "/usr/bin/julia"
-        };
-        for (String s : paths) {
-            File f = new File(s);
+        String readpath = Constants.properties.getProperty(Constants.JULIA_PATH);
+        String[] paths = new String[] {readpath, "/usr/local/bin/julia", "/usr/bin/julia", "/bin/julia", "C:\\Program Files\\Julia\\bin\\julia.exe"};
+        
+        for (String path: paths) {
+            File f = new File(path);
             if (f.exists() && f.canExecute()) {
-                return s;
+                return path;
             }
-        }
+        } 
+        
         throw new JuliaRuntimeException("Julia executable is not found in predefined paths.");
     }
     
