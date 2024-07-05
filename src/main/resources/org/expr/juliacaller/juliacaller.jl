@@ -2,16 +2,16 @@
 juliacaller:
 - Julia version: 1.4
 - Author: Mehmet Hakan Satman
-- Date: 2020-04-03 =#
+- Date: 2020-04-03
+=#
 
-using Sockets
-using Pkg
+using Pkg, Sockets
 
 
 a = try
-    v = Pkg.installed()["JSON"]
+    	v = Pkg.installed()["JSON"]
 	catch
-    Pkg.add("JSON")
+    	Pkg.add("JSON")
 end
 
 
@@ -61,7 +61,7 @@ function handle_client(server, client)
 			if startswith(__line__, "execute ")
 				__command__ = __line__[9:end]
 				try
-					@debug Evaling __command__
+					@info __command__
 					eval(Meta.parse(__command__))
 				catch mth_err
 					@error mth_err
@@ -112,8 +112,5 @@ function serve(PORT=8000)
 		end
 	end
 end
-
-
-
 
 
