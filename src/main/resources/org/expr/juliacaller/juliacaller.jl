@@ -73,7 +73,7 @@ function handle_client(server, client)
 				break
 			elseif startswith(__line__, "install ")
 				__pkg__ = __line__[9:end]
-				Pkg.add(__Pkg__)
+				Pkg.add(__pkg__)
 			elseif startswith(__line__, "shutdown")
 				close(client)
 				close(server)
