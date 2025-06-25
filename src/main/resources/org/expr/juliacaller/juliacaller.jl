@@ -17,10 +17,6 @@ end
 
 using JSON
 
-function writeln(client, str)
-	write(client, str)
-	write(client, "\r\n")
-end
 
 """
 Handles the client connection.
@@ -68,11 +64,11 @@ function handle_client(server, client)
 					close(client)
 					close(server)
 				end
-				# writeln(client, "eval okay")
+				#println(client, "eval okay")
 			elseif startswith(__line__, "get ")
 				__varname__ = __line__[5:end]
 				__D__ = Dict(__varname__ => eval(Meta.parse(__varname__)))
-				writeln(client, json(__D__))
+				println(client, json(__D__))
 			elseif startswith(__line__, "exit")
 				break
 			elseif startswith(__line__, "install ")
@@ -107,7 +103,7 @@ function serve(PORT=8000)
 		catch err
 			close(client)
 			close(server)
-			writeln("Closed connection and server, exiting")
+			println("Closed connection and server, exiting")
 			break
 		end
 	end
