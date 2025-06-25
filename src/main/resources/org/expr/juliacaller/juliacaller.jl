@@ -8,10 +8,10 @@ juliacaller:
 using Pkg, Sockets
 
 
-a = try
-    	v = Pkg.installed()["JSON"]
-	catch
-    	Pkg.add("JSON")
+try
+   	using JSON
+catch e
+    Pkg.add("JSON")
 end
 
 
