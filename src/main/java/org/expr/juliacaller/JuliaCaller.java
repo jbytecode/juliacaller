@@ -102,7 +102,14 @@ public class JuliaCaller {
         bufferedWriterForSocket.newLine();
     }
 
-    public synchronized void ExecuteDefineFunction(String command) throws IOException {
+    /**
+     * Executes a Julia command and returns the result as a String.
+     *
+     * @param command The Julia command to execute. Command may be a struct or a function definition.
+     * @return The result of the command execution as a String.
+     * @throws IOException If an I/O error occurs while communicating with the Julia server.
+     */
+    public synchronized void ExecuteDefine(String command) throws IOException {
         SimpleLog("Execute: Sending function definition");
         File tempfile = File.createTempFile("juliacaller-function-definition", "jl");
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempfile));

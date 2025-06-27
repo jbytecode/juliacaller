@@ -1,8 +1,6 @@
 package org.expr.juliacaller;
 
 import java.io.IOException;
-import java.util.List;
-import static org.expr.juliacaller.TestBasics.caller;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -57,7 +55,7 @@ public class TestFunctionDefinition {
                   return total
                 end
                 """;
-        caller.ExecuteDefineFunction(code);
+        caller.ExecuteDefine(code);
         caller.Execute("jresult = mysum(3, 5)");
 
         int result = caller.getInt("jresult");
@@ -78,7 +76,7 @@ public class TestFunctionDefinition {
                 end
                 """;
 
-        caller.ExecuteDefineFunction(code);
+        caller.ExecuteDefine(code);
 
         caller.Execute("jresult = mysum(3, 5)");
         int result = caller.getInt("jresult");
@@ -101,7 +99,7 @@ public class TestFunctionDefinition {
                     )
                 end
                 """;
-        caller.ExecuteDefineFunction(code);
+        caller.ExecuteDefine(code);
 
         caller.Execute("jresult = getDictionary()");
 
@@ -110,5 +108,25 @@ public class TestFunctionDefinition {
         assertEquals(2, jresult.getJSONObject("jresult").getInt("b"));
         assertEquals(3.14, jresult.getJSONObject("jresult").getDouble("c"));
         assertEquals(true, jresult.getJSONObject("jresult").getBoolean("d"));
+    }
+
+    @Test 
+    public void defineStructTest() throws IOException {
+        String code = """
+                struct MyCustomData
+                    x::Int64
+                    y::Float64
+                    z::String
+                end
+                """;
+
+        caller.ExecuteDefine(code);
+
+        caller.Execute("myobject = MyCustomData(42, 3.14, \"Hello\")");
+
+        JSONObject myobject = caller.GetAsJSONObject("myobject");
+        assertEquals(42, myobject.getJSONObject("myobject").getInt("x"));
+        assertEquals(3.14, myobject.getJSONObject("myobject").getDouble("y"));
+        assertEquals("Hello", myobject.getJSONObject("myobject").getString("z"));
     }
 }
