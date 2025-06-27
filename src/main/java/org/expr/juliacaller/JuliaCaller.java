@@ -33,7 +33,7 @@ public class JuliaCaller {
     }
 
     public void startServer() throws IOException {
-        process = Runtime.getRuntime().exec(pathToJulia);
+        process = new ProcessBuilder(pathToJulia).start();
         InputStream is = this.getClass().getResourceAsStream("juliacaller.jl");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
