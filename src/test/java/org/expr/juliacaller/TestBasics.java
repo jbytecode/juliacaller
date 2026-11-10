@@ -68,7 +68,11 @@ public class TestBasics {
         caller.Execute("b = 6.5");
         caller.Execute("d = Dict(\"first\" => b, \"second\" => a)");
         String s = caller.GetAsJSONString("d");
-        assertEquals("{\"d\":{\"second\":[1,2,3,4],\"first\":6.5}}", s);
+        // Dictionary order may vary, so we check both possible JSON representations
+        assertTrue(
+            s.equals("{\"d\":{\"second\":[1,2,3,4],\"first\":6.5}}") ||
+            s.equals("{\"d\":{\"first\":6.5,\"second\":[1,2,3,4]}}")
+        );
     }
 
     @Test

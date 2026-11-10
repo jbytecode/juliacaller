@@ -8,12 +8,10 @@ juliacaller:
 using Pkg, Sockets
 
 
-try
-   	using JSON
-catch e
+if Base.find_package("JSON") === nothing
+    @info "JSON package is not installed, installing it now..."
     Pkg.add("JSON")
 end
-
 
 using JSON
 
@@ -68,7 +66,7 @@ function handle_client(server, client)
 			elseif startswith(__line__, "get ")
 				__varname__ = __line__[5:end]
 				__D__ = Dict(__varname__ => eval(Meta.parse(__varname__)))
-				println(client, json(__D__))
+				println(client, JSON.json(__D__))
 			elseif startswith(__line__, "exit")
 				break
 			elseif startswith(__line__, "install ")
