@@ -14,8 +14,29 @@ public class Utilities {
                 return path;
             }
         } 
-        
+
+        String executableName = File.separatorChar == '\\' ? "julia.exe" : "julia";
+        String executableOnPath = findOnPath(executableName, System.getenv("PATH"));
+        if (executableOnPath != null) {
+            return executableOnPath;
+        }
+
         throw new JuliaRuntimeException("Julia executable is not found in predefined paths.");
     }
-    
+
+    static String findOnPath(String executableName, String path) {
+        if (path == null) {
+            return null;
+        }
+
+        for (String directory : path.split(File.pathSeparator)) {
+            File executable = new File(directory, executableName);
+            if (executable.isFile() && executable.canExecute()) {
+                return executable.getPath();
+            }
+        }
+
+        return null;
+    }
+
 }
